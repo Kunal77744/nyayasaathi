@@ -1,0 +1,25 @@
+{
+  "name": "nyayasaathi",
+  "version": "1.0.0",
+  "description": "GenAI assistant that helps ordinary people understand, compare and ask questions about legal documents. Information only, not legal advice.",
+  "private": true,
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=20.16"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test",
+    "check-llm": "node scripts/check-llm.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "multer": "^2.4.0",
+    "pdf-parse": "^2.4.5"
+  }
+}
