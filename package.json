@@ -11,10 +11,14 @@
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "lint": "eslint .",
+    "format": "prettier --check .",
     "check-llm": "node scripts/check-llm.js"
   },
   "license": "MIT",
   "dependencies": {
+    "compression": "^1.8.2",
     "dotenv": "^18.0.1",
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
@@ -22,5 +26,9 @@
     "multer": "^2.4.0",
     "pdf-parse": "^2.4.5",
     "serverless-http": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.11.0",
+    "prettier": "^3.9.8"
   }
 }

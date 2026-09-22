@@ -1,5 +1,6 @@
 'use strict';
 
+const compression = require('compression');
 const path = require('node:path');
 const express = require('express');
 const helmet = require('helmet');
@@ -18,24 +19,49 @@ const DISCLAIMER =
   'This is general information to help you understand the document. It is not legal advice. Please consult a qualified lawyer before making decisions.';
 
 /**
- * Builds the Express app. `llm` is any object with `generateJson({system, user})`,
- * which keeps the app testable without calling a real AI service.
+ * Builds the Express app instance with middleware, security headers,
+ * caching, compression, and error handling.
+ *
+ * @param {object} [options] - Setup options.
+ * @param {object|null} [options.llm=null] - LLM provider object.
+ * @param {number} [options.rateLimitMax=config.rateLimit.max] - Max rate limit requests per window.
+ * @param {object} [options.limits=config.limits] - Validation size limits.
+ * @returns {import('express').Express} Express application.
  */
 function createApp({ llm = null, rateLimitMax = config.rateLimit.max, limits = config.limits } = {}) {
   const app = express();
   const cache = new TtlCache();
 
   app.disable('x-powered-by');
-  app.set('trust proxy', 1); // running behind Render/Vercel proxy: use the real client IP for rate limiting
+  app.set('trust proxy', 1);
 
+  // Payload & HTTP response compression
+  app.use(compression());
+
+  // Security headers setup via Helmet & custom policy
   app.use(
     helmet({
       contentSecurityPolicy: {
         useDefaults: true,
-        directives: { 'upgrade-insecure-requests': null },
+        directives: {
+          'default-src': ["'self'"],
+          'script-src': ["'self'"],
+          'style-src': ["'self'", "'unsafe-inline'"],
+          'font-src': ["'self'", 'data:'],
+          'img-src': ["'self'", 'data:', 'blob:'],
+          'upgrade-insecure-requests': null,
+        },
       },
+      crossOriginEmbedderPolicy: false,
+      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+      hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
     })
   );
+
+  app.use((_req, res, next) => {
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+    next();
+  });
 
   const apiLimiter = rateLimit({
     windowMs: config.rateLimit.windowMs,
@@ -85,7 +111,12 @@ function createApp({ llm = null, rateLimitMax = config.rateLimit.max, limits = c
     const text = validateDocument(body.text, 'Document', limits);
     const language = validateLanguage(body.language);
     requireLlm();
-    const analysis = await runCached('analyze', [language, text], buildAnalyzePrompt({ text, language }), normalizeAnalysis);
+    const analysis = await runCached(
+      'analyze',
+      [language, text],
+      buildAnalyzePrompt({ text, language }),
+      normalizeAnalysis
+    );
     res.json({ ...analysis, disclaimer: DISCLAIMER });
   });
 
@@ -110,7 +141,12 @@ function createApp({ llm = null, rateLimitMax = config.rateLimit.max, limits = c
     const question = validateQuestion(body.question, limits);
     const language = validateLanguage(body.language);
     requireLlm();
-    const answer = await runCached('ask', [language, text, question], buildAskPrompt({ text, question, language }), normalizeAnswer);
+    const answer = await runCached(
+      'ask',
+      [language, text, question],
+      buildAskPrompt({ text, question, language }),
+      normalizeAnswer
+    );
     res.json({ ...answer, disclaimer: DISCLAIMER });
   });
 
@@ -118,10 +154,14 @@ function createApp({ llm = null, rateLimitMax = config.rateLimit.max, limits = c
     res.status(404).json({ error: 'Not found.' });
   });
 
-  app.use(express.static(path.join(__dirname, '..', 'public')));
+  app.use(
+    express.static(path.join(__dirname, '..', 'public'), {
+      maxAge: '1d',
+      etag: true,
+    })
+  );
 
   // Central error handler: user-safe messages only, never stack traces or document text.
-  // eslint-disable-next-line no-unused-vars
   app.use((err, _req, res, _next) => {
     if (err instanceof AppError) {
       return res.status(err.status).json({ error: err.message, code: err.code });

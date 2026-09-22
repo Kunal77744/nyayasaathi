@@ -4,19 +4,19 @@ A GenAI assistant that helps ordinary people **understand, compare and question 
 
 > **Information, not legal advice.** NyayaSaathi explains what a document says and where the risks are. It never tells the user whether to sign, and every screen carries a disclaimer.
 
-Built for PromptWars Virtual: *AI for Legal Assistance & Access*.
+Built for PromptWars Virtual: _AI for Legal Assistance & Access_.
 
 ## What it does
 
-| Need from the problem statement | Feature |
-|---|---|
-| Simplify complex documents | Plain-language summary and key facts (parties, money, dates, notice period) |
-| Highlight clauses, obligations, risks, inconsistencies | Clause flags labelled **High / Medium / Low risk**, plus a "contradictions inside the document" section |
-| Compare contracts or versions | Side-by-side table of differences, which side carries more risk, and clauses that appear in only one document |
-| Answer questions from the document | "Ask a question" box; answers use only the document and show the supporting quote, or say the document does not answer |
-| Options and next steps | Checklist to work through before agreeing |
-| Prepare for a legal professional | "Questions to ask a lawyer" generated from the document, with a copy button |
-| Accessibility for Hindi speakers | Answers in English or Hindi (Devanagari), chosen with one toggle |
+| Need from the problem statement                        | Feature                                                                                                                |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Simplify complex documents                             | Plain-language summary and key facts (parties, money, dates, notice period)                                            |
+| Highlight clauses, obligations, risks, inconsistencies | Clause flags labelled **High / Medium / Low risk**, plus a "contradictions inside the document" section                |
+| Compare contracts or versions                          | Side-by-side table of differences, which side carries more risk, and clauses that appear in only one document          |
+| Answer questions from the document                     | "Ask a question" box; answers use only the document and show the supporting quote, or say the document does not answer |
+| Options and next steps                                 | Checklist to work through before agreeing                                                                              |
+| Prepare for a legal professional                       | "Questions to ask a lawyer" generated from the document, with a copy button                                            |
+| Accessibility for Hindi speakers                       | Answers in English or Hindi (Devanagari), chosen with one toggle                                                       |
 
 Input can be pasted text or an uploaded PDF or TXT file. Two sample rent agreements are built in so the app can be tried in seconds.
 

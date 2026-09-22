@@ -25,7 +25,12 @@ test('TXT upload returns cleaned text', async (t) => {
 test('a real PDF is parsed into text', async (t) => {
   const s = await startServer({ llm: null });
   t.after(() => s.close());
-  const res = await upload(s.base, 'agreement.pdf', fs.readFileSync(path.join(__dirname, 'fixtures', 'rent.pdf')), 'application/pdf');
+  const res = await upload(
+    s.base,
+    'agreement.pdf',
+    fs.readFileSync(path.join(__dirname, 'fixtures', 'rent.pdf')),
+    'application/pdf'
+  );
   assert.equal(res.status, 200);
   const { text } = await res.json();
   assert.match(text, /Monthly rent is Rs 25000/);
@@ -50,7 +55,10 @@ test('unsupported and disguised files are rejected', async (t) => {
 });
 
 test('files over the size limit are refused', async (t) => {
-  const s = await startServer({ llm: null, limits: { minDocChars: 40, maxDocChars: 40000, maxQuestionChars: 500, maxFileBytes: 1024 } });
+  const s = await startServer({
+    llm: null,
+    limits: { minDocChars: 40, maxDocChars: 40000, maxQuestionChars: 500, maxFileBytes: 1024 },
+  });
   t.after(() => s.close());
   const res = await upload(s.base, 'big.txt', 'x'.repeat(5000));
   assert.equal(res.status, 413);

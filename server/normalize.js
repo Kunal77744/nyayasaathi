@@ -7,12 +7,26 @@ const SEVERITY_ORDER = { high: 0, medium: 1, low: 2 };
 const badOutput = () =>
   new AppError(502, 'The AI returned an unexpected response. Please try again.', 'BAD_LLM_OUTPUT');
 
-/** Coerces to a trimmed single-line string capped at `max` characters. */
+/**
+ * Coerces a value to a trimmed single-line string capped at `max` characters.
+ *
+ * @param {unknown} value - Raw input value.
+ * @param {number} [max=600] - Max allowed string length.
+ * @returns {string} Cleaned and truncated string.
+ */
 function str(value, max = 600) {
   const s = typeof value === 'string' ? value : typeof value === 'number' ? String(value) : '';
   return s.replace(/\s+/g, ' ').trim().slice(0, max);
 }
 
+/**
+ * Maps an array value up to `max` items using `mapper`.
+ *
+ * @param {unknown} value - Input array.
+ * @param {number} max - Max items to take.
+ * @param {Function} mapper - Mapping function.
+ * @returns {Array} Cleaned array.
+ */
 function list(value, max, mapper) {
   return Array.isArray(value) ? value.slice(0, max).map(mapper).filter(Boolean) : [];
 }
@@ -24,7 +38,12 @@ function asObject(raw) {
   return raw;
 }
 
-/** Shapes model output into exactly what the UI expects, whatever the model returned. */
+/**
+ * Shapes model analysis output into the validated schema expected by the UI.
+ *
+ * @param {unknown} raw - Raw LLM JSON object.
+ * @returns {object} Normalized analysis object.
+ */
 function normalizeAnalysis(raw) {
   const r = asObject(raw);
   const flags = list(r.flags, 15, (f) => {
@@ -57,6 +76,12 @@ function normalizeAnalysis(raw) {
   return out;
 }
 
+/**
+ * Shapes model comparison output into the validated schema expected by the UI.
+ *
+ * @param {unknown} raw - Raw LLM JSON object.
+ * @returns {object} Normalized comparison object.
+ */
 function normalizeComparison(raw) {
   const r = asObject(raw);
   const out = {
@@ -86,6 +111,12 @@ function normalizeComparison(raw) {
   return out;
 }
 
+/**
+ * Shapes model answer output into the validated schema expected by the UI.
+ *
+ * @param {unknown} raw - Raw LLM JSON object.
+ * @returns {object} Normalized answer object.
+ */
 function normalizeAnswer(raw) {
   const r = asObject(raw);
   const answer = str(r.answer, 1500);

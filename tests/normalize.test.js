@@ -13,7 +13,10 @@ test('normalizeAnalysis sorts flags by severity and fixes unknown severities', (
       { severity: 'catastrophic', clause: 'Odd one', whyItMatters: 'Unknown severity.' },
     ],
   });
-  assert.deepEqual(result.flags.map((f) => f.severity), ['high', 'medium', 'low']);
+  assert.deepEqual(
+    result.flags.map((f) => f.severity),
+    ['high', 'medium', 'low']
+  );
   assert.equal(result.documentType, 'Legal document');
   assert.deepEqual(result.checklist, []);
 });
@@ -46,7 +49,10 @@ test('normalizeComparison keeps a valid risk marker and defaults the rest', () =
       { topic: '' },
     ],
   });
-  assert.deepEqual(result.differences.map((d) => d.higherRiskIn), ['A', 'similar', 'unclear']);
+  assert.deepEqual(
+    result.differences.map((d) => d.higherRiskIn),
+    ['A', 'similar', 'unclear']
+  );
   assert.equal(result.differences[1].documentA, 'Not mentioned');
   assert.throws(() => normalizeComparison({}), { status: 502 });
 });

@@ -1,118 +1,175 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NyayaSaathi – Understand legal documents in plain language</title>
-  <meta name="description" content="Paste or upload a rental agreement, job offer, loan or NDA. Get a plain-language summary, risky clauses, a checklist and questions for your lawyer, in English or Hindi.">
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-  <a class="skip-link" href="#main">Skip to main content</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NyayaSaathi – Understand legal documents in plain language</title>
+    <meta
+      name="description"
+      content="Paste or upload a rental agreement, job offer, loan or NDA. Get a plain-language summary, risky clauses, a checklist and questions for your lawyer, in English or Hindi."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-  <header class="masthead">
-    <div class="masthead-inner">
-      <div class="brand">
-        <h1>NyayaSaathi <span class="brand-hi" lang="hi">न्यायसाथी</span></h1>
-        <p class="tagline">Understand, compare and question the legal documents you are asked to sign.</p>
+    <header class="masthead">
+      <div class="masthead-inner">
+        <div class="brand">
+          <h1>NyayaSaathi <span class="brand-hi" lang="hi">न्यायसाथी</span></h1>
+          <p class="tagline">Understand, compare and question the legal documents you are asked to sign.</p>
+        </div>
+        <fieldset class="language" aria-describedby="language-help">
+          <legend>Answer language</legend>
+          <label class="choice"><input type="radio" name="language" value="en" checked /> English</label>
+          <label class="choice"><input type="radio" name="language" value="hi" /> <span lang="hi">हिन्दी</span></label>
+          <p id="language-help" class="visually-hidden">Choose the language used for the AI's answers.</p>
+        </fieldset>
       </div>
-      <fieldset class="language" aria-describedby="language-help">
-        <legend>Answer language</legend>
-        <label class="choice"><input type="radio" name="language" value="en" checked> English</label>
-        <label class="choice"><input type="radio" name="language" value="hi"> <span lang="hi">हिन्दी</span></label>
-        <p id="language-help" class="visually-hidden">Choose the language used for the AI's answers.</p>
-      </fieldset>
-    </div>
-  </header>
+    </header>
 
-  <p class="disclaimer" role="note">
-    <strong>Information, not legal advice.</strong>
-    NyayaSaathi explains documents in plain language. It cannot replace a lawyer, and it never tells you whether to sign.
-  </p>
+    <p class="disclaimer" role="note">
+      <strong>Information, not legal advice.</strong>
+      NyayaSaathi explains documents in plain language. It cannot replace a lawyer, and it never tells you whether to
+      sign.
+    </p>
 
-  <main id="main" class="page">
-    <div class="tabs" role="tablist" aria-label="Choose a tool">
-      <button type="button" role="tab" id="tab-analyze" class="tab" aria-selected="true" aria-controls="panel-analyze">Understand &amp; ask</button>
-      <button type="button" role="tab" id="tab-compare" class="tab" aria-selected="false" aria-controls="panel-compare" tabindex="-1">Compare two documents</button>
-    </div>
+    <main id="main" class="page">
+      <div class="tabs" role="tablist" aria-label="Choose a tool">
+        <button
+          type="button"
+          role="tab"
+          id="tab-analyze"
+          class="tab"
+          aria-selected="true"
+          aria-controls="panel-analyze"
+        >
+          Understand &amp; ask
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-compare"
+          class="tab"
+          aria-selected="false"
+          aria-controls="panel-compare"
+          tabindex="-1"
+        >
+          Compare two documents
+        </button>
+      </div>
 
-    <!-- UNDERSTAND & ASK -->
-    <section id="panel-analyze" role="tabpanel" aria-labelledby="tab-analyze" class="panel">
-      <form id="analyze-form" novalidate>
-        <h2>Your document</h2>
-        <label for="doc-text" class="field-label">Paste the document text</label>
-        <textarea id="doc-text" name="text" rows="12" maxlength="40000" spellcheck="false" aria-describedby="doc-hint doc-count" placeholder="Paste a rent agreement, job offer, loan agreement, NDA or policy here."></textarea>
-        <p id="doc-hint" class="hint">Personal details such as names and addresses can be replaced with placeholders before you paste. Up to 40,000 characters.</p>
-        <p id="doc-count" class="hint" aria-live="polite">0 characters</p>
+      <!-- UNDERSTAND & ASK -->
+      <section id="panel-analyze" role="tabpanel" aria-labelledby="tab-analyze" class="panel">
+        <form id="analyze-form" novalidate>
+          <h2>Your document</h2>
+          <label for="doc-text" class="field-label">Paste the document text</label>
+          <textarea
+            id="doc-text"
+            name="text"
+            rows="12"
+            maxlength="40000"
+            spellcheck="false"
+            aria-describedby="doc-hint doc-count"
+            placeholder="Paste a rent agreement, job offer, loan agreement, NDA or policy here."
+          ></textarea>
+          <p id="doc-hint" class="hint">
+            Personal details such as names and addresses can be replaced with placeholders before you paste. Up to
+            40,000 characters.
+          </p>
+          <p id="doc-count" class="hint" aria-live="polite">0 characters</p>
 
-        <div class="actions">
-          <label class="button button-secondary file-button">
-            Upload PDF or TXT
-            <input type="file" id="doc-file" accept=".pdf,.txt,application/pdf,text/plain">
-          </label>
-          <button type="button" class="button button-secondary" id="load-sample">Try a sample rent agreement</button>
-          <button type="button" class="button button-quiet" id="clear-doc">Clear</button>
-          <button type="submit" class="button button-primary" id="analyze-btn">Analyse document</button>
-        </div>
-        <p id="analyze-status" class="status" role="status"></p>
-        <p id="analyze-error" class="error" role="alert" hidden></p>
-      </form>
-
-      <div id="analyze-results" class="results" hidden></div>
-
-      <form id="ask-form" class="ask" novalidate>
-        <h2>Ask a question about this document</h2>
-        <label for="ask-input" class="field-label">Your question</label>
-        <div class="ask-row">
-          <input type="text" id="ask-input" maxlength="500" autocomplete="off" placeholder="e.g. What happens if I leave after 6 months?">
-          <button type="submit" class="button button-primary" id="ask-btn">Ask</button>
-        </div>
-        <p id="ask-status" class="status" role="status"></p>
-        <p id="ask-error" class="error" role="alert" hidden></p>
-        <div id="ask-answers" class="answers" aria-live="polite"></div>
-      </form>
-    </section>
-
-    <!-- COMPARE -->
-    <section id="panel-compare" role="tabpanel" aria-labelledby="tab-compare" class="panel" hidden>
-      <form id="compare-form" novalidate>
-        <h2>Two documents or two versions</h2>
-        <div class="compare-grid">
-          <div class="compare-col">
-            <label for="text-a" class="field-label">Document A</label>
-            <textarea id="text-a" rows="10" maxlength="40000" spellcheck="false" aria-describedby="text-a-count"></textarea>
-            <p id="text-a-count" class="hint" aria-live="polite">0 characters</p>
+          <div class="actions">
             <label class="button button-secondary file-button">
-              Upload PDF or TXT for A
-              <input type="file" id="file-a" accept=".pdf,.txt,application/pdf,text/plain">
+              Upload PDF or TXT
+              <input type="file" id="doc-file" accept=".pdf,.txt,application/pdf,text/plain" />
             </label>
+            <button type="button" class="button button-secondary" id="load-sample">Try a sample rent agreement</button>
+            <button type="button" class="button button-quiet" id="clear-doc">Clear</button>
+            <button type="submit" class="button button-primary" id="analyze-btn">Analyse document</button>
           </div>
-          <div class="compare-col">
-            <label for="text-b" class="field-label">Document B</label>
-            <textarea id="text-b" rows="10" maxlength="40000" spellcheck="false" aria-describedby="text-b-count"></textarea>
-            <p id="text-b-count" class="hint" aria-live="polite">0 characters</p>
-            <label class="button button-secondary file-button">
-              Upload PDF or TXT for B
-              <input type="file" id="file-b" accept=".pdf,.txt,application/pdf,text/plain">
-            </label>
+          <p id="analyze-status" class="status" role="status"></p>
+          <p id="analyze-error" class="error" role="alert" hidden></p>
+        </form>
+
+        <div id="analyze-results" class="results" hidden></div>
+
+        <form id="ask-form" class="ask" novalidate>
+          <h2>Ask a question about this document</h2>
+          <label for="ask-input" class="field-label">Your question</label>
+          <div class="ask-row">
+            <input
+              type="text"
+              id="ask-input"
+              maxlength="500"
+              autocomplete="off"
+              placeholder="e.g. What happens if I leave after 6 months?"
+            />
+            <button type="submit" class="button button-primary" id="ask-btn">Ask</button>
           </div>
-        </div>
-        <div class="actions">
-          <button type="button" class="button button-secondary" id="load-compare-sample">Try two sample drafts</button>
-          <button type="button" class="button button-quiet" id="clear-compare">Clear both</button>
-          <button type="submit" class="button button-primary" id="compare-btn">Compare documents</button>
-        </div>
-        <p id="compare-status" class="status" role="status"></p>
-        <p id="compare-error" class="error" role="alert" hidden></p>
-      </form>
-      <div id="compare-results" class="results" hidden></div>
-    </section>
-  </main>
+          <p id="ask-status" class="status" role="status"></p>
+          <p id="ask-error" class="error" role="alert" hidden></p>
+          <div id="ask-answers" class="answers" aria-live="polite"></div>
+        </form>
+      </section>
 
-  <footer class="footer">
-    <p>Built for PromptWars. Documents are sent to Google's Gemini API to generate answers and are not stored by this site.</p>
-  </footer>
+      <!-- COMPARE -->
+      <section id="panel-compare" role="tabpanel" aria-labelledby="tab-compare" class="panel" hidden>
+        <form id="compare-form" novalidate>
+          <h2>Two documents or two versions</h2>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <label for="text-a" class="field-label">Document A</label>
+              <textarea
+                id="text-a"
+                rows="10"
+                maxlength="40000"
+                spellcheck="false"
+                aria-describedby="text-a-count"
+              ></textarea>
+              <p id="text-a-count" class="hint" aria-live="polite">0 characters</p>
+              <label class="button button-secondary file-button">
+                Upload PDF or TXT for A
+                <input type="file" id="file-a" accept=".pdf,.txt,application/pdf,text/plain" />
+              </label>
+            </div>
+            <div class="compare-col">
+              <label for="text-b" class="field-label">Document B</label>
+              <textarea
+                id="text-b"
+                rows="10"
+                maxlength="40000"
+                spellcheck="false"
+                aria-describedby="text-b-count"
+              ></textarea>
+              <p id="text-b-count" class="hint" aria-live="polite">0 characters</p>
+              <label class="button button-secondary file-button">
+                Upload PDF or TXT for B
+                <input type="file" id="file-b" accept=".pdf,.txt,application/pdf,text/plain" />
+              </label>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" class="button button-secondary" id="load-compare-sample">
+              Try two sample drafts
+            </button>
+            <button type="button" class="button button-quiet" id="clear-compare">Clear both</button>
+            <button type="submit" class="button button-primary" id="compare-btn">Compare documents</button>
+          </div>
+          <p id="compare-status" class="status" role="status"></p>
+          <p id="compare-error" class="error" role="alert" hidden></p>
+        </form>
+        <div id="compare-results" class="results" hidden></div>
+      </section>
+    </main>
 
-  <script src="/app.js"></script>
-</body>
+    <footer class="footer">
+      <p>
+        Built for PromptWars. Documents are sent to Google's Gemini API to generate answers and are not stored by this
+        site.
+      </p>
+    </footer>
+
+    <script src="/app.js"></script>
+  </body>
 </html>
