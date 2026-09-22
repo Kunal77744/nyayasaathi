@@ -160,7 +160,7 @@ function createGeminiClient({
           break;
         }
         lastError = result.retryable;
-        if (attempt === 0) await sleep(1200);
+        if (attempt === 0) await sleep(200);
       }
     }
     throw lastError || new AppError(503, 'The AI service is unavailable.', 'LLM_UNAVAILABLE');

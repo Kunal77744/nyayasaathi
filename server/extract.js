@@ -3,13 +3,7 @@
 const { AppError } = require('./errors');
 const { cleanText } = require('./validate');
 
-let pdfParseModule = null;
-function getPdfParse() {
-  if (!pdfParseModule) {
-    pdfParseModule = require('pdf-parse');
-  }
-  return pdfParseModule;
-}
+const { PDFParse } = require('pdf-parse');
 
 const MAX_PDF_PAGES = 40;
 
@@ -32,7 +26,6 @@ async function extractText(file) {
     let parsed;
     let parser;
     try {
-      const { PDFParse } = getPdfParse();
       parser = new PDFParse({ data: new Uint8Array(buffer) });
       parsed = await parser.getText({ first: MAX_PDF_PAGES });
     } catch (_) {

@@ -35,8 +35,8 @@ function createApp({ llm = null, rateLimitMax = config.rateLimit.max, limits = c
   app.disable('x-powered-by');
   app.set('trust proxy', 1);
 
-  // Payload & HTTP response compression
-  app.use(compression());
+  // Payload & HTTP response compression (bypass zlib CPU overhead on responses smaller than 1KB)
+  app.use(compression({ threshold: 1024 }));
 
   // Security headers setup via Helmet & custom policy
   app.use(

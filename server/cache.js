@@ -42,7 +42,6 @@ class TtlCache {
    * @param {any} value - Value to cache.
    */
   set(key, value) {
-    this.purgeExpired();
     if (this.store.has(key)) this.store.delete(key);
     this.store.set(key, { value, expires: this.now() + this.ttlMs });
     while (this.store.size > this.max) {
