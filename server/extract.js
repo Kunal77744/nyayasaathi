@@ -3,9 +3,23 @@
 const { AppError } = require('./errors');
 const { cleanText } = require('./validate');
 
-const { PDFParse } = require('pdf-parse');
-
 const MAX_PDF_PAGES = 40;
+
+let PDFParseClass = null;
+function getPDFParseClass() {
+  if (!PDFParseClass) {
+    if (typeof globalThis.DOMMatrix === 'undefined') {
+      globalThis.DOMMatrix = class DOMMatrix {
+        constructor() {
+          this.a = 1; this.b = 0; this.c = 0; this.d = 1; this.e = 0; this.f = 0;
+        }
+      };
+    }
+    const pdfModule = require('pdf-parse');
+    PDFParseClass = pdfModule.PDFParse || pdfModule;
+  }
+  return PDFParseClass;
+}
 
 /**
  * Reads and extracts clean text from an uploaded PDF or TXT file buffer.
@@ -26,6 +40,7 @@ async function extractText(file) {
     let parsed;
     let parser;
     try {
+      const PDFParse = getPDFParseClass();
       parser = new PDFParse({ data: new Uint8Array(buffer) });
       parsed = await parser.getText({ first: MAX_PDF_PAGES });
     } catch (_) {
