@@ -8,7 +8,7 @@ const llm = config.geminiApiKey
   ? createGeminiClient({
       apiKey: config.geminiApiKey,
       models: config.models,
-      timeoutMs: config.llmTimeoutMs,
+      timeoutMs: 9000,
     })
   : null;
 

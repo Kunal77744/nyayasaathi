@@ -13,7 +13,7 @@ const config = {
   // Preferred model first, then fallbacks used automatically if a model is retired/unavailable.
   models: [
     ...new Set(
-      [process.env.GEMINI_MODEL, 'gemini-3.6-flash', 'gemini-flash-latest', 'gemini-2.5-flash', 'gemini-2.0-flash']
+      [process.env.GEMINI_MODEL, 'gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-flash-latest']
         .map((m) => (m || '').trim())
         .filter(Boolean)
     ),

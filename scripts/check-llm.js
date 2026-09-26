@@ -7,7 +7,8 @@ const { createGeminiClient } = require('../server/llm');
 (async () => {
   if (!config.geminiApiKey) {
     console.error('GEMINI_API_KEY is not set. Copy .env.example to .env and add your key.');
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
   const client = createGeminiClient({ apiKey: config.geminiApiKey, models: config.models });
   try {
@@ -18,6 +19,7 @@ const { createGeminiClient } = require('../server/llm');
     console.log('OK. Model used:', client.lastModelUsed, '| reply:', JSON.stringify(result));
   } catch (err) {
     console.error('FAILED:', err.message);
-    process.exit(1);
+    process.exitCode = 1;
   }
 })();
+
